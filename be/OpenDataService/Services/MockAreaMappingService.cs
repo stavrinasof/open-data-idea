@@ -15,11 +15,11 @@ namespace OpenDataService.Services
             {
                 {
                     (NetworkType.Eydap, 1),
-                    new Location(2345,2123443, "Gazi", new List<string>{"a","b" })
+                    new Location(2345,2123443, "Galatsi", new List<string>{"Antaiou","Narkisou" })
                 },
                 {
                     (NetworkType.Eydap, 2),
-                    new Location(2345,2123443, "Gazi", new List<string>{"a","b" })
+                    new Location(2345,2123443, "Galatsi", new List<string>{"Veikou","Tralleon", "Kountourioti" })
                 }
             };
             _logger = logger;
