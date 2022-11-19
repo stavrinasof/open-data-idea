@@ -2,5 +2,6 @@
 {
     public class IncidentReport : Report
     {
+        public DateTime ResolveTime { get; set; }
     }
 }

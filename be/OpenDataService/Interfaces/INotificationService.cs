@@ -4,6 +4,6 @@ namespace OpenDataService.Interfaces
 {
     public interface INotificationService
     {
-        void SendNotification(NotificationData notification, Location location);
+        void SendNotification(NotificationData notification);
     }
 }

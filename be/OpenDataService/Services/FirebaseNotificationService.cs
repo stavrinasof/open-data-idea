@@ -5,7 +5,7 @@ namespace OpenDataService.Services
 {
     public class FirebaseNotificationService : INotificationService
     {
-        public void SendNotification(NotificationData notification, Location location)
+        public void SendNotification(NotificationData notification)
         {
             throw new NotImplementedException();
         }

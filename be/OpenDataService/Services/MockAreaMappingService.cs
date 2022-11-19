@@ -18,7 +18,7 @@ namespace OpenDataService.Services
                     new Location(2345,2123443, "Gazi", new List<string>{"a","b" })
                 },
                 {
-                    (NetworkType.Eydap, 1),
+                    (NetworkType.Eydap, 2),
                     new Location(2345,2123443, "Gazi", new List<string>{"a","b" })
                 }
             };
