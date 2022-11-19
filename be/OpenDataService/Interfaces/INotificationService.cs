@@ -4,6 +4,16 @@ namespace OpenDataService.Interfaces
 {
     public interface INotificationService
     {
-        void SendNotification(NotificationData notification);
+        Task<ServiceResult> SendNotificationAsync(NotificationData notification);
+    }
+
+    public interface IFireBaseNotificationService 
+    {
+        Task<ServiceResult> SendNotificationAsync(NotificationData notification);
+    }
+
+    public interface ISlackNotificationService 
+    {
+        Task<ServiceResult> SendNotificationAsync(NotificationData notification);
     }
 }

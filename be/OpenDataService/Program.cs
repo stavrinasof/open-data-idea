@@ -10,8 +10,12 @@ builder.Services.AddSingleton<IReportRepository<MaintenaceReport>, MaintenanceRe
 builder.Services.AddSingleton<IReportRepository<IncidentReport>, IncidentReportsRepository>();
 
 builder.Services.AddSingleton<IAreaMappingService, MockAreaMappingService>();
-builder.Services.AddTransient<INotificationService, FirebaseNotificationService>();
+builder.Services.AddScoped<INotificationService, NotificationService>();
+builder.Services.AddScoped<IFireBaseNotificationService, FirebaseNotificationService>();
+builder.Services.AddScoped<ISlackNotificationService, SlackNotificationService>();
 
+var appSettingsSection = builder.Configuration.GetSection("FirebaseSettings");
+builder.Services.Configure<FirebaseSettings>(appSettingsSection);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -29,11 +29,11 @@ namespace OpenDataService.Controllers
 
         [Route("incident")]
         [HttpPost]
-        public IActionResult AddReportIncident(IncidentReport report)
+        public async Task<IActionResult> AddReportIncidentAsync(IncidentReport report)
         {
             _incidentRepository.AddReport(report);
-            var success = GenerateAndSendNotification(report);
-            if (success)
+            var result = await GenerateAndSendNotificationAsync(report);
+            if (result.IsSuccess)
             {
                 return Ok("Notifications sent");
             }
@@ -42,11 +42,11 @@ namespace OpenDataService.Controllers
 
         [Route("maintenace")]
         [HttpPost]
-        public IActionResult AddMaintenance(MaintenaceReport report)
+        public async Task<IActionResult> AddMaintenanceAsync(MaintenaceReport report)
         {
             _maintenaceRepository.AddReport(report);
-            var success = GenerateAndSendNotification(report);
-            if (success)
+            var result = await GenerateAndSendNotificationAsync(report);
+            if (result.IsSuccess)
             {
                 return Ok("Notifications sent");
             }
@@ -59,16 +59,16 @@ namespace OpenDataService.Controllers
 
         [Route("incident/{id}")]
         [HttpPut]
-        public IActionResult EditIncidentReport(int reportId, bool resolved)
+        public async Task<IActionResult> EditIncidentReportAsync(int reportId, bool resolved)
         {
             var report = _incidentRepository.GetReport(reportId);
             if (report != null)
             {
                 report.IsResolved = resolved;
                 report.ResolveTime = DateTime.Now;
-                var success = GenerateAndSendNotification(report, true);
+                var result = await GenerateAndSendNotificationAsync(report, true);
 
-                if (success)
+                if (result.IsSuccess)
                 {
                     return Ok("Notifications sent");
                 }
@@ -83,16 +83,16 @@ namespace OpenDataService.Controllers
 
         [Route("maintenace/{id}")]
         [HttpPut]
-        public IActionResult EditMaintenance(int reportId, bool resolved, DateTime resolutionTime)
+        public async Task<IActionResult> EditMaintenanceAsync(int reportId, bool resolved, DateTime resolutionTime)
         {
             var report = _maintenaceRepository.GetReport(reportId);
             if (report != null)
             {
                 report.IsResolved = resolved;
                 report.DateTimeEnd = resolutionTime;
-                var success = GenerateAndSendNotification(report, true);
+                var result = await GenerateAndSendNotificationAsync(report, true);
 
-                if (success)
+                if (result.IsSuccess)
                 {
                     return Ok("Notifications sent");
                 }
@@ -104,30 +104,28 @@ namespace OpenDataService.Controllers
         }
         #endregion
 
-        private bool GenerateAndSendNotification(IncidentReport report, bool isUpdate = false)
+        private async Task<ServiceResult> GenerateAndSendNotificationAsync(IncidentReport report, bool isUpdate = false)
         {
             var location = _areaMappingService.MapReportToArea(report);
             if (location == null)
             {
                 _logger.LogError($"Location for {report.Id} is not found");
-                return false;
+                return new ServiceResult(false);
             }
             var notificationData = NotificationCreatorHelper.GetNotification(report, location, isUpdate);
-            _notificationService.SendNotification(notificationData);
-            return true;
+            return await _notificationService.SendNotificationAsync(notificationData);
         }
 
-        private bool GenerateAndSendNotification(MaintenaceReport report, bool isUpdate = false)
+        private async Task<ServiceResult> GenerateAndSendNotificationAsync(MaintenaceReport report, bool isUpdate = false)
         {
             var location = _areaMappingService.MapReportToArea(report);
             if (location == null)
             {
                 _logger.LogError($"Location for {report.Id} is not found");
-                return false;
+                return new ServiceResult(false);
             }
             var notificationData = NotificationCreatorHelper.GetNotification(report, location, isUpdate);
-            _notificationService.SendNotification(notificationData);
-            return true;
+            return await _notificationService.SendNotificationAsync(notificationData);
         }
     }
 }

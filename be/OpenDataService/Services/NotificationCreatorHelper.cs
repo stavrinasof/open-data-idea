@@ -13,7 +13,7 @@ namespace OpenDataService.Services
             var resolutionText = report.IsResolved ? " Issue is now resolved" : $"Estimated time of resolution {report.ResolveTime}";
             var streetText = "Incident affects " +
                (location.StreetNames.Any() ? string.Join(", ", location.StreetNames) : location.Area);
-            notification.Message = $"{report.NetworkType}, {report.Type}, {location.Area}, {resolutionText}. {streetText}";
+            notification.Message = $"{report.NetworkType}, {location.Area}, {resolutionText}. {streetText}";
 
             return notification;
         }
@@ -26,7 +26,7 @@ namespace OpenDataService.Services
             var resolutionText = report.IsResolved ? " Maintenance is now ended" : $"Estimated time of resolution {report.DateTimeEnd}";
             var streetText = "Maintenace affects " +
              (location.StreetNames.Any() ? string.Join(", ", location.StreetNames) : location.Area);
-            notification.Message = $"{report.NetworkType}, {report.Type}, {location.Area}, {resolutionText}. {streetText}";
+            notification.Message = $"{report.NetworkType}, {location.Area}, {resolutionText}. {streetText}";
 
             return notification;
         }
